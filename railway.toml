@@ -2,7 +2,7 @@
 builder = "dockerfile"
 
 [deploy]
-startCommand = "moltbot gateway --foreground"
+startCommand = "moltbot gateway --allow-unconfigured"
 restartPolicyType = "on_failure"
 
 [variables]
