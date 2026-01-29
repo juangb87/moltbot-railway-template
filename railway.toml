@@ -1,7 +1,9 @@
 [build]
 builder = "dockerfile"
+
 [deploy]
-startCommand = "node /app/src/server.js"
+startCommand = "moltbot gateway --foreground"
 restartPolicyType = "on_failure"
+
 [variables]
 PORT = "8080"
