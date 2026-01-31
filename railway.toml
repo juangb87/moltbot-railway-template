@@ -2,7 +2,7 @@
 builder = "dockerfile"
 
 [deploy]
-startCommand = "openclaw gateway start --allow-unconfigured"
+startCommand = "openclaw gateway --allow-unconfigured"
 restartPolicyType = "on_failure"
 
 [variables]
