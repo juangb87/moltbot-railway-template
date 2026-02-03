@@ -70,6 +70,14 @@ USER root
 RUN chown -R root:root /home/linuxbrew/.linuxbrew
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
 
+# Install gogcli (Google Workspace CLI)
+USER linuxbrew
+RUN brew install steipete/tap/gogcli
+USER root
+
+# (opcional) sanity check
+RUN gog --help | head -n 5
+
 WORKDIR /app
 
 # Wrapper deps
