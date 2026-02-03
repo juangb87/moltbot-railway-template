@@ -66,14 +66,14 @@ RUN useradd -m -s /bin/bash linuxbrew \
 USER linuxbrew
 RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-USER root
-RUN chown -R root:root /home/linuxbrew/.linuxbrew
-ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
-
 # Install gogcli (Google Workspace CLI)
 USER linuxbrew
 RUN brew install steipete/tap/gogcli
 USER root
+
+USER root
+RUN chown -R root:root /home/linuxbrew/.linuxbrew
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
 
 # (opcional) sanity check
 RUN gog --help | head -n 5
