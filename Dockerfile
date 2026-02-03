@@ -59,31 +59,25 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Homebrew (must run as non-root user)
-# Create a user for Homebrew installation, install it, then make it accessible to all users
+# Create a user for Homebrew installation
 RUN useradd -m -s /bin/bash linuxbrew \
   && echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+# Install Homebrew as linuxbrew user
 USER linuxbrew
 RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install gogcli (Google Workspace CLI)
-USER linuxbrew
 RUN brew install steipete/tap/gogcli
+
+# Back to root for the rest of the image
 USER root
 
-USER root
-RUN chown -R root:root /home/linuxbrew/.linuxbrew
+# Make brew available on PATH (no chown needed)
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
 
-# (opcional) sanity check
+# Sanity check
 RUN gog --help | head -n 5
-
-WORKDIR /app
-
-# Wrapper deps
-RUN corepack enable
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod --frozen-lockfile && pnpm store prune
 
 # Copy built openclaw
 COPY --from=openclaw-build /openclaw /openclaw
